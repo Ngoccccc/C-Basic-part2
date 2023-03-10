@@ -1,47 +1,46 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-
-typedef struct _time{
+typedef struct _time
+{
     int hh;
     int mm;
     int ss;
     int DD;
     int MM;
     int YYYY;
-}time;
+} time;
 
-typedef struct _guixe{
+typedef struct _guixe
+{
     char bienso[20];
     time time;
     int guihaylay;
     struct _guixe *next;
-}guixe;
+} guixe;
 
-typedef struct _quanligui{
+typedef struct _quanligui
+{
     char bienso[20];
     time time;
     int guihaylay;
     struct _quanligui *left;
     struct _quanligui *right;
-}quanligui;
-
+} quanligui;
 
 quanligui *rootBT;
 guixe *root;
 
-
-
-guixe * llPrint(guixe * root)
+guixe *llPrint(guixe *root)
 {
     for (guixe *p = root; p != NULL; p = p->next)
-        printf("%4.d-%2.2d-%2.2d %2.2d:%2.2d:%2.2d %s %d\n", p->time.YYYY,p->time.MM,p->time.DD,p->time.hh,p->time.mm,p->time.ss,p->bienso,p->guihaylay);
+        printf("%4.d-%2.2d-%2.2d %2.2d:%2.2d:%2.2d %s %d\n", p->time.YYYY, p->time.MM, p->time.DD, p->time.hh, p->time.mm, p->time.ss, p->bienso, p->guihaylay);
     printf("\n");
     return root;
 }
 
-guixe *createNewNode(int YYYY, int MM,int DD,int hh,int mm, int ss, char bienso[20],int guihaylay)
+guixe *createNewNode(int YYYY, int MM, int DD, int hh, int mm, int ss, char bienso[20], int guihaylay)
 {
     guixe *newNode = (guixe *)malloc(sizeof(guixe));
     if (newNode == NULL)
@@ -58,7 +57,7 @@ guixe *createNewNode(int YYYY, int MM,int DD,int hh,int mm, int ss, char bienso[
     return newNode;
 }
 
-quanligui *createNewNodeBT(int YYYY, int MM,int DD,int hh,int mm, int ss, char bienso[20],int guihaylay)
+quanligui *createNewNodeBT(int YYYY, int MM, int DD, int hh, int mm, int ss, char bienso[20], int guihaylay)
 {
     quanligui *newNode = (quanligui *)malloc(sizeof(quanligui));
     if (newNode == NULL)
@@ -76,12 +75,12 @@ quanligui *createNewNodeBT(int YYYY, int MM,int DD,int hh,int mm, int ss, char b
     return newNode;
 }
 
-guixe* llInsertTail(guixe* root,int YYYY, int MM,int DD,int hh,int mm, int ss, char bienso[20],int guihaylay)
+guixe *llInsertTail(guixe *root, int YYYY, int MM, int DD, int hh, int mm, int ss, char bienso[20], int guihaylay)
 {
-    guixe *pNewNode = createNewNode(YYYY,MM,DD,hh,mm,ss,bienso,guihaylay);
+    guixe *pNewNode = createNewNode(YYYY, MM, DD, hh, mm, ss, bienso, guihaylay);
 
     if (root == NULL)
-        return (guixe*)pNewNode;
+        return (guixe *)pNewNode;
 
     guixe *p = NULL;
     for (p = root; p->next != NULL; p = p->next)
@@ -90,8 +89,10 @@ guixe* llInsertTail(guixe* root,int YYYY, int MM,int DD,int hh,int mm, int ss, c
     return root;
 }
 
-quanligui * insert(quanligui *node,int YYYY, int MM,int DD,int hh,int mm, int ss, char bienso[20],int guihaylay){
-    if(node == NULL) return createNewNodeBT(YYYY,MM,DD,hh,mm,ss,bienso,guihaylay);
+quanligui *insert(quanligui *node, int YYYY, int MM, int DD, int hh, int mm, int ss, char bienso[20], int guihaylay)
+{
+    if (node == NULL)
+        return createNewNodeBT(YYYY, MM, DD, hh, mm, ss, bienso, guihaylay);
     int c = strcmp(node->bienso, bienso);
     if (c == 0) // không insert được nếu tên trùng nhau
     {
@@ -100,12 +101,12 @@ quanligui * insert(quanligui *node,int YYYY, int MM,int DD,int hh,int mm, int ss
     }
     else if (c < 0) //  thì add node vừa insert vào rightChild
     {
-        node->right = insert(node->right,YYYY,MM,DD,hh,mm,ss,bienso,guihaylay);
+        node->right = insert(node->right, YYYY, MM, DD, hh, mm, ss, bienso, guihaylay);
         return node;
     }
     else // thì add node vừa insert vào leftChild
     {
-        node->left = insert(node->left,YYYY,MM,DD,hh,mm,ss,bienso,guihaylay);
+        node->left = insert(node->left, YYYY, MM, DD, hh, mm, ss, bienso, guihaylay);
         return node;
     }
 }
@@ -124,14 +125,18 @@ quanligui *findMin(quanligui *r)
     return r;
 }
 
-quanligui * find(quanligui *r, char bienso[20]){
-    if(r == NULL) return NULL;
+quanligui *find(quanligui *r, char bienso[20])
+{
+    if (r == NULL)
+        return NULL;
     int c = strcmp(r->bienso, bienso);
-    if(c == 0){
+    if (c == 0)
+    {
         return r;
     }
-    if(c<0) return find(r->right,bienso);
-    return find(r->left,bienso);
+    if (c < 0)
+        return find(r->right, bienso);
+    return find(r->left, bienso);
 }
 
 quanligui *delete_quanligui(quanligui *r, char bienso[20])
@@ -169,11 +174,11 @@ quanligui *delete_quanligui(quanligui *r, char bienso[20])
     return r;
 }
 
-
-
-void readData(){
-    FILE * f = fopen("data.txt","r");
-    if(f == NULL){
+void readData()
+{
+    FILE *f = fopen("data.txt", "r");
+    if (f == NULL)
+    {
         printf("Error opening data.txt file");
     }
     char bienso[40];
@@ -184,16 +189,18 @@ void readData(){
     int MM;
     int YYYY;
     int guihaylay;
-    while(!feof(f)){
-        fscanf(f,"%d-%d-%d %d:%d:%d %s %d",&YYYY,&MM,&DD,&hh,&mm,&ss,bienso,&guihaylay);
-        root = llInsertTail(root, YYYY,MM,DD,hh,mm,ss,bienso,guihaylay);
+    while (!feof(f))
+    {
+        fscanf(f, "%d-%d-%d %d:%d:%d %s %d", &YYYY, &MM, &DD, &hh, &mm, &ss, bienso, &guihaylay);
+        root = llInsertTail(root, YYYY, MM, DD, hh, mm, ss, bienso, guihaylay);
     }
-
 }
 
-void readDataBT(){
-    FILE * f = fopen("data.txt","r");
-    if(f == NULL){
+void readDataBT()
+{
+    FILE *f = fopen("data.txt", "r");
+    if (f == NULL)
+    {
         printf("Error opening data.txt file");
     }
     char bienso[40];
@@ -204,49 +211,53 @@ void readDataBT(){
     int MM;
     int YYYY;
     int guihaylay;
-    while(!feof(f)){
-        fscanf(f,"%d-%d-%d %d:%d:%d %s %d",&YYYY,&MM,&DD,&hh,&mm,&ss,bienso,&guihaylay);
-        if(guihaylay == 1){
-            rootBT = insert(rootBT, YYYY,MM,DD,hh,mm,ss,bienso,guihaylay);
+    while (!feof(f))
+    {
+        fscanf(f, "%d-%d-%d %d:%d:%d %s %d", &YYYY, &MM, &DD, &hh, &mm, &ss, bienso, &guihaylay);
+        if (guihaylay == 1)
+        {
+            rootBT = insert(rootBT, YYYY, MM, DD, hh, mm, ss, bienso, guihaylay);
         }
-        if(guihaylay == 0){
-            rootBT = delete_quanligui(rootBT,bienso);
+        if (guihaylay == 0)
+        {
+            rootBT = delete_quanligui(rootBT, bienso);
         }
-        
     }
-
 }
 int count = 0;
 void inOrder(quanligui *r)
 {
-    
+
     if (r == NULL)
         return;
     inOrder(r->left);
     count++;
-    printf("Bien so: %s\n",r->bienso);
+    printf("Bien so: %s\n", r->bienso);
     inOrder(r->right);
 }
 
 void inOrderF(quanligui *r)
 {
-    FILE *f = fopen("change_log.txt","w");
+    FILE *f = fopen("change_log.txt", "w");
     if (r == NULL)
         return;
     inOrderF(r->left);
-    fprintf(f,"%d-%d-%d %d:%d:%d %s %d",r->time.YYYY,r->time.MM,r->time.DD,r->time.hh,r->time.mm,r->time.ss,r->bienso,r->guihaylay);
+    fprintf(f, "%d-%d-%d %d:%d:%d %s %d", r->time.YYYY, r->time.MM, r->time.DD, r->time.hh, r->time.mm, r->time.ss, r->bienso, r->guihaylay);
     inOrderF(r->right);
 }
 
-void freeTree(quanligui *tree) {
-  if (tree != NULL) {
-    freeTree(tree->left);
-    freeTree(tree->right);
-    free((void *)tree);
-  }
+void freeTree(quanligui *tree)
+{
+    if (tree != NULL)
+    {
+        freeTree(tree->left);
+        freeTree(tree->right);
+        free((void *)tree);
+    }
 }
 
-void main(){
+void main()
+{
     char name1[30];
     int chon;
     char name[30];
@@ -269,69 +280,85 @@ void main(){
             break;
         case 2:
             printf("Nhap ngay thang nam can truy van: ");
-            int nam,thang,ngay;
-            scanf("%d-%d-%d",&nam,&thang,&ngay);
-            int countGui=0;
-            int countLay=0;
-            guixe *p =root;
-            for (p ; p->next != NULL; p = p->next){
-                if(p->time.YYYY==nam && p->time.MM==thang && p->time.DD==ngay ){
-                    if( p->guihaylay == 0){
-                    countLay++;
+            int nam, thang, ngay;
+            scanf("%d-%d-%d", &nam, &thang, &ngay);
+            int countGui = 0;
+            int countLay = 0;
+            guixe *p = root;
+            for (p; p->next != NULL; p = p->next)
+            {
+                if (p->time.YYYY == nam && p->time.MM == thang && p->time.DD == ngay)
+                {
+                    if (p->guihaylay == 0)
+                    {
+                        countLay++;
                     }
-                    if(p->guihaylay == 1){
-                    countGui++;
+                    if (p->guihaylay == 1)
+                    {
+                        countGui++;
                     }
                 }
             }
-            printf("So luot gui la: %d\n",countGui);
-            printf("So luot lay la: %d\n",countLay);
+            printf("So luot gui la: %d\n", countGui);
+            printf("So luot lay la: %d\n", countLay);
             break;
         case 3:
+        {
             int luachon;
-            
+
             readDataBT();
-            printf("so luong xe gui la: %d\n",count);
+            printf("so luong xe gui la: %d\n", count);
             inOrder(rootBT);
             printf("1. In thong tin cac xe trong bai\n");
             printf("2. Gui xe\n");
             printf("3. Tra xe\n");
-            scanf("%d",&luachon);
-            do{
-            switch (luachon)
+            scanf("%d", &luachon);
+            do
             {
-            case 1:
-                
-                break;
-            case 2:
-                char biensomoi[20];
-                printf("Nhap bien so xe");
-                scanf("%s",biensomoi);
-                if(find(rootBT,biensomoi)){
-                    printf("Xe da gui");
+                switch (luachon)
+                {
+                case 1:
+
+                    break;
+                case 2:
+                {
+                    char biensomoi[20];
+                    printf("Nhap bien so xe");
+                    scanf("%s", biensomoi);
+                    if (find(rootBT, biensomoi))
+                    {
+                        printf("Xe da gui");
+                    }
+                    else
+                    {
+                        rootBT = insert(rootBT, 2023, 02, 28, 06, 30, 30, biensomoi[20], 1);
+                    }
+
+                    break;
                 }
-                else{
-                    rootBT = insert(rootBT,2023, 02,28,06,30, 30, biensomoi[20],1);
+                case 3:
+                {
+                    char biensotra[20];
+                    printf("Nhap bien so xe");
+                    scanf("%s", biensotra);
+                    if (find(rootBT, biensotra))
+                    {
+                        printf("Xe da tra");
+                    }
+                    else
+                    {
+                        rootBT = delete_quanligui(rootBT, biensotra);
+                    }
+                    break;
                 }
-                break;
-            case 3:
-                char biensotra[20];
-                printf("Nhap bien so xe");
-                scanf("%s",biensotra);
-                if(find(rootBT,biensotra)){
-                    printf("Xe da tra");
+                default:
+                    break;
                 }
-                else{
-                    rootBT = delete_quanligui(rootBT, biensotra);
-                }
-                break;
-            default:
-                break;
-            }
-            
-            }
-            while (luachon!=0);
+
+            } while (luachon != 0);
+
             break;
+        }
         case 4:
             inOrderF(rootBT);
             break;
@@ -339,7 +366,7 @@ void main(){
             printf("Ket thuc chuong trinh ");
             break;
         default:
-            
+
             break;
         }
 
